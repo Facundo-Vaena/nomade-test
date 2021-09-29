@@ -1,23 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css';
+import { BrowserRouter, Route } from 'react-router-dom';
+import FirstScreen from './components/FirstScreen';
+import SecondScreen from './components/SecondScreen';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Route exact path='/' component={FirstScreen}/>
+        <Route path='/result' component={SecondScreen}/>
+      </BrowserRouter>
     </div>
   );
 }
