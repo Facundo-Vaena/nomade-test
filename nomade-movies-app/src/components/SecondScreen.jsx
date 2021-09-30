@@ -13,23 +13,23 @@ import {
 
 const { Title } = Typography;
 
-
 export function SecondScreen({ data }) {
-
+    
     const { profile_path, name, gender, popularity, known_for } = data;
     const history = useHistory();
+    let randomKey = 0;
     const genero = { 1: 'Mujer', 2: 'Hombre' }
     const goHome = () => history.push('/');
 
 
     useEffect(() => {
-        console.log(profile_path);
         !data && goHome();
     }, [])
 
     return (
 
         <DivContainer>
+
             <Row span={24}>
                 <Col>
                     <RegresarDiv>
@@ -37,7 +37,9 @@ export function SecondScreen({ data }) {
                     </RegresarDiv>
                 </Col>
             </Row>
+
             <Divider />
+
             <Row>
 
                 <Col span={6} style={{ height: 360 }}>
@@ -51,12 +53,18 @@ export function SecondScreen({ data }) {
                     </ActorInfoContainer>
 
                 </Col>
+
                 <Divider type='vertical' style={{ height: 1040 }} />
+
                 <Col span={12}>
+
                     <Title style={{ display: 'flex', justifyContent: 'flex-start' }}>Películas:</Title>
+
                     <Divider style={{ paddingRight: 1040 }} />
-                    {known_for?.map(movie => (
-                        <>
+
+                    {known_for?.map(movie =>
+                    (
+                        <div key={randomKey++}>
                             <FirstMovieDiv>
                                 <Title level={2}>{movie.title}</Title>
                                 <DisplayFlex>
@@ -66,19 +74,30 @@ export function SecondScreen({ data }) {
                                     </StarDiv>
                                 </DisplayFlex>
                             </FirstMovieDiv>
+
+
                             <DisplayFlex>
+
                                 <MovieImg src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt="" />
+                                
                                 <SecondMovieDiv>
                                     <Typography.Paragraph style={{ textAlign: 'start' }}>{movie.overview}</Typography.Paragraph>
                                     <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {movie.release_date}</Title>
                                 </SecondMovieDiv>
+
                             </DisplayFlex>
+
                             <Divider style={{ paddingRight: 1040 }} />
-                        </>
-                    ))}
+                        </div>
+                    )
+
+                    )
+
+                    }
                 </Col>
 
             </Row>
+
         </DivContainer>
     )
 }

@@ -15,20 +15,17 @@ export function FirstScreen({ setData }) {
     const history = useHistory();
     const goResult = () => history.push('result');
 
-    const error = () => {
-        window.location.reload();
-
-        return message.error('Actor no encontrado');
-    }
-
+    
     useEffect(() => {
         if (state) {
             setData(state)
-                .then(() => {
-                    goResult();
-                })
+            .then(() => {
+                goResult();
+            })
         }
+        // eslint-disable-next-line
     }, [state])
+    
 
 
 
@@ -47,7 +44,7 @@ export function FirstScreen({ setData }) {
             if (status !== 'uploading') {
             }
             if (status === 'done') {
-                return info.file.response.actorName !== "" ? setState(info.file.response.actorName) : error();
+                return info.file.response.actorName !== "" ? setState(info.file.response.actorName) : message.error('Actor no encontrado');
 
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
@@ -72,7 +69,7 @@ export function FirstScreen({ setData }) {
         <DivContainer>
             <Title>¿Quién es este actor?</Title>
             <DraggerContainer>
-                <Dragger {...props}>
+                <Dragger {...props} maxCount={1}>
                     <p className="ant-upload-drag-icon">
                         <InboxOutlined />
                     </p>
