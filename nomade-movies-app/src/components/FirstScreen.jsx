@@ -1,18 +1,53 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Upload, message, Typography } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { setData } from '../actions';
+// import { Redirect } from 'react-router-dom';
+
 const { Title } = Typography;
 
 
-export default function FirstScreen() {
+export function FirstScreen({ data, setData }) {
     const [state, setState] = useState(false);
     const { Dragger } = Upload;
     const history = useHistory();
-    const goResult = () => history.push('result');
+    const goResult = () =>{
+        console.log('entré a goResult');
+        history.push('result');
+        }
+    // const goResult2 = () => <Redirect to='/result' />
 
-    useEffect(() => {
-        state && goResult();
+    // useEffect(() => {
+    //     setState(false);
+    //     console.log('data1', data)
+    //     setData();
+    //     console.log('data2', data);
+    // }, []);
+
+    useEffect( () => {
+        if(state) {
+            console.log('state', state);
+            setData(state)
+            .then(() => {
+                console.log('dataa', data);
+                goResult();
+                // data !== '' && goResult();
+                // data !== '' && console.log('data', data);
+            })
+            // console.log('dataa', data);
+            // data !== '' && goResult();
+        }
+        // setData();
+        // // console.log('state', state)
+        // state && setData(state)
+        //     .then(() => {
+        //         // console.log('data3', data);
+        //         data.length > 0 && goResult();
+
+        //     })
+        // data.length > 0 && goResult2();
     }, [state])
 
 
@@ -21,12 +56,13 @@ export default function FirstScreen() {
 
     const props = {
         name: 'file',
-        multiple: true,
+        multiple: false,
 
         headers: {
             // ContentType: "multipart/form-data",
             "Nomada": apiKey,
         },
+        
         action: 'https://whois.nomada.cloud/upload',
         onChange(info) {
             const { status } = info.file;
@@ -35,7 +71,7 @@ export default function FirstScreen() {
             }
             if (status === 'done') {
                 // message.success(`${info.file.name} file uploaded successfully.`);
-                setState(info.file.response);
+                setState(info.file.response.actorName);
                 // console.log('ACA', info.file.response);
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
@@ -44,6 +80,11 @@ export default function FirstScreen() {
         onDrop(e) {
             console.log('Dropped files', e.dataTransfer.files);
         },
+        beforeUpload() {
+            //el hook anda bien
+            setState(false);
+            setData();
+        }
     };
 
 
@@ -64,3 +105,19 @@ export default function FirstScreen() {
     );
 
 }
+
+function mapStateToProps(state) {
+    return {
+        data: state.data,
+        // otherData: state.otherData,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setData: (name) => dispatch(setData(name)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FirstScreen);
+
