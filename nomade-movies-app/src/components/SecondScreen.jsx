@@ -14,11 +14,15 @@ import {
 const { Title } = Typography;
 
 export function SecondScreen({ data }) {
-    
+
     const { profile_path, name, gender, popularity, known_for } = data;
     const history = useHistory();
     let randomKey = 0;
     const genero = { 1: 'Mujer', 2: 'Hombre' }
+    const mes = {
+        '01': 'enero', '02': 'febrero', '03': 'marzo', '04': 'abril', '05': 'mayo', '06': 'junio',
+        '07': 'julio', '08': 'agosto', '09': 'septiembre', '10': 'octubre', '11': 'noviembre', '12': 'diciembre'
+    }
     const goHome = () => history.push('/');
 
 
@@ -79,10 +83,11 @@ export function SecondScreen({ data }) {
                             <DisplayFlex>
 
                                 <MovieImg src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt="" />
-                                
+
                                 <SecondMovieDiv>
                                     <Typography.Paragraph style={{ textAlign: 'start' }}>{movie.overview}</Typography.Paragraph>
-                                    <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {movie.release_date}</Title>
+                                    {/* <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {movie.release_date}</Title> */}
+                                    <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {`${movie.release_date.slice(8)} de ${mes[movie.release_date.slice(5, 7)]} de ${movie.release_date.slice(0, 4)}`}</Title>
                                 </SecondMovieDiv>
 
                             </DisplayFlex>
