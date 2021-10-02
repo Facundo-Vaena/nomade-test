@@ -70,7 +70,7 @@ export function SecondScreen({ data }) {
                     (
                         <div key={randomKey++}>
                             <FirstMovieDiv>
-                                <Title level={2}>{movie.title}</Title>
+                                <Title level={2}>{movie.title || movie.name}</Title>
                                 <DisplayFlex>
                                     <Title level={4}>{movie.vote_average}/10</Title>
                                     <StarDiv>
@@ -87,7 +87,18 @@ export function SecondScreen({ data }) {
                                 <SecondMovieDiv>
                                     <Typography.Paragraph style={{ textAlign: 'start' }}>{movie.overview}</Typography.Paragraph>
                                     {/* <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {movie.release_date}</Title> */}
-                                    <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' } : { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>Fecha de estreno: {`${movie.release_date.slice(8)} de ${mes[movie.release_date.slice(5, 7)]} de ${movie.release_date.slice(0, 4)}`}</Title>
+                                    <Title level={5} style={movie.overview.length ? { display: 'flex', justifyContent: 'flex-start' }
+                                        :
+                                        { display: 'flex', justifyContent: 'flex-start', marginTop: '30%' }}>
+                                        Fecha de estreno:
+                                        {
+                                            movie.release_date || movie.first_air_date ? `${ movie.release_date ? movie.release_date?.slice(8) : movie.first_air_date?.slice(8) } de
+                                           ${ movie.release_date ? mes[movie.release_date?.slice(5, 7)] : mes[movie.first_air_date?.slice(5, 7)] } de
+                                            ${ movie.release_date ? movie.release_date?.slice(0, 4) : movie.first_air_date?.slice(0, 4)}`
+                                                :
+                                                null
+                                        }
+                                    </Title>
                                 </SecondMovieDiv>
 
                             </DisplayFlex>
